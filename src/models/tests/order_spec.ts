@@ -1,8 +1,20 @@
 import { OrderStore } from "../order";
+import { UserStore } from "../user";
 
 const store = new OrderStore();
+const user_store = new UserStore();
 
 describe("Order Model", () => {
+  // Create dummy user record
+  beforeAll(async () => {
+    const result = await user_store.create({
+      id: 0,
+      firstName: "souaad",
+      lastName: "souaad",
+      password: "souaad",
+    });
+  });
+
   it("should have an index method", () => {
     expect(store.index).toBeDefined();
   });
@@ -19,7 +31,7 @@ describe("Order Model", () => {
     expect(store.delete).toBeDefined();
   });
 
-  it("create method should add a order", async () => {
+  it("create method should add an order", async () => {
     const result = await store.create({
       id: 0,
       user_id: 1,
@@ -50,5 +62,19 @@ describe("Order Model", () => {
       user_id: 1,
       status: "active",
     });
+  });
+
+  it("delete method should delete the correct order", async () => {
+    const result = await store.delete(1);
+    expect(result).toEqual({
+      id: 1,
+      user_id: 1,
+      status: "active",
+    });
+  });
+
+  // Delete dummy user record
+  afterAll(async () => {
+    await user_store.delete("1");
   });
 });

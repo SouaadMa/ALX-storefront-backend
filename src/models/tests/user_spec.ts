@@ -27,7 +27,7 @@ describe("User Model", () => {
       password: "souaad",
     });
     expect(result).toEqual({
-      id: 1,
+      id: 2,
       firstName: "souaad",
       lastName: "souaad",
     });
@@ -37,7 +37,7 @@ describe("User Model", () => {
     const result = await store.index();
     expect(result).toEqual([
       {
-        id: 1,
+        id: 2,
         firstname: "souaad",
         lastname: "souaad",
       },
@@ -45,9 +45,9 @@ describe("User Model", () => {
   });
 
   it("show method should return the correct user", async () => {
-    const result = await store.show(1);
+    const result = await store.show(2);
     expect(result).toEqual({
-      id: 1,
+      id: 2,
       firstname: "souaad",
       lastname: "souaad",
     });
@@ -56,7 +56,7 @@ describe("User Model", () => {
   it("authenticate method should return the correct user", async () => {
     const result = await store.authenticate("souaad", "souaad", "souaad");
     expect(result).toEqual({
-      id: 1,
+      id: 2,
       firstname: "souaad",
       lastname: "souaad",
     });
