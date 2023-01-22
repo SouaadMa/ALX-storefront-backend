@@ -1,6 +1,9 @@
 import express, { Request, Response } from "express";
 import { Product, ProductStore } from "../models/product";
-
+import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+dotenv.config()
+type Next = () => void | Promise<void>;
 const store = new ProductStore();
 
 const index = async (_req: Request, res: Response) => {
@@ -31,10 +34,23 @@ const destroy = async (req: Request, res: Response) => {
   res.json(deleted);
 };
 
+const verifyAuthToken = (req: Request, res: Response, next: Next) => {
+  try {
+    //Accesing the header
+    const authorizationHeader = req.headers.authorization;
+    if(authorizationHeader == null) throw new Error("authorizationHeader is undefined!")
+    const token = authorizationHeader.split(" ")[1]; // to separate the bearer
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET as string);
+    next();
+  } catch (error) {
+    res.status(401);
+  }
+};
+
 const productRoutes = (app: express.Application) => {
   app.get("/products", index);
   app.get("/products/:id", show);
-  app.post("/products", create);
+  app.post("/products", verifyAuthToken, create);
 };
 
 export default productRoutes;
