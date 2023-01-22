@@ -15,12 +15,9 @@ const show = async (req: Request, res: Response) => {
 
 const create = async (req: Request, res: Response) => {
   try {
-    const product: Product = {
-      id: 0,
-      name: req.params.name,
-      price: Number(req.params.price),
-    };
-
+    if (!req.body.name || !req.body.price)
+      throw new Error("Name and price are required to create a product");
+    const product: Product = req.body;
     const newProduct = await store.create(product);
     res.json(newProduct);
   } catch (err) {
