@@ -6,7 +6,7 @@ export class DashboardQueries {
   async fiveMostExpensive(): Promise<Product[]> {
     try {
       //@ts-ignore
-      const conn = await Client.connect();
+      const conn = await client.connect();
       const sql = "SELECT * FROM products ORDER BY price DESC LIMIT 5";
 
       const result = await conn.query(sql);
