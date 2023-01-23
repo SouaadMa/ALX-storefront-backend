@@ -42,7 +42,7 @@ Check your test database in `psql`
 ```shell
 user=# \c db_test;
 You are now connected to database "db_test" as user "user".
-db_dev=# \dt
+db_test=# \dt
                  List of relations
  Schema |      Name      | Type  |      Owner      
 --------+----------------+-------+-----------------
