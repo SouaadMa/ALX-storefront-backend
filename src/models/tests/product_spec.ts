@@ -2,7 +2,7 @@ import { ProductStore, Product } from "../product";
 
 const store = new ProductStore();
 
-let dummy_product: Product = {
+const dummy_product: Product = {
   id: 0,
   name: "Pc",
   price: 2500,

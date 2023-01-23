@@ -1,18 +1,17 @@
 import supertest from "supertest";
 import { Product, ProductStore } from "../../models/product";
-import { User, UserStore } from "../../models/user";
+import { User } from "../../models/user";
 import app from "../../server";
 
 const request = supertest(app);
 const product_store = new ProductStore();
-let dummy_product: Product = {
+const dummy_product: Product = {
   id: 0,
   name: "Pc",
   price: 10,
 };
 
-const user_store = new UserStore();
-let dummy_user: User = {
+const dummy_user: User = {
   id: 0,
   firstname: "souaad",
   lastname: "souaad",

@@ -1,20 +1,17 @@
 import supertest from "supertest";
-import { Product, ProductStore } from "../../models/product";
-import { User, UserStore } from "../../models/user";
+import { Product } from "../../models/product";
+import { User } from "../../models/user";
 import { Order, OrderStore } from "../../models/order";
 import app from "../../server";
-import { isIterationStatement } from "typescript";
 
 const request = supertest(app);
-const product_store = new ProductStore();
-let dummy_product: Product = {
+const dummy_product: Product = {
   id: 0,
   name: "Pc",
   price: 10,
 };
 
-const user_store = new UserStore();
-let dummy_user: User = {
+const dummy_user: User = {
   id: 0,
   firstname: "souaad",
   lastname: "souaad",
@@ -22,7 +19,7 @@ let dummy_user: User = {
 };
 
 const order_store = new OrderStore();
-let dummy_order: Order = {
+const dummy_order: Order = {
   id: 0,
   user_id: 0,
   status: "",
@@ -38,7 +35,10 @@ beforeAll(async () => {
   expect(dummy_user.id).toBeTruthy();
   token = response2.body.token;
 
-  const response3 = await request.post("/products").send(dummy_product).set("Authorization", `Bearer ${token}`); // Create a dummy product
+  const response3 = await request
+    .post("/products")
+    .send(dummy_product)
+    .set("Authorization", `Bearer ${token}`); // Create a dummy product
   dummy_product.id = response3.body.id;
   expect(response3.status).toBe(200);
   expect(dummy_product.id).toBeTruthy();
@@ -82,7 +82,6 @@ describe("POST /orders == create new order", () => {
 
 describe("POST /orders/:id/products == add product to order", () => {
   it("should return a 200 response when all is well", async () => {
-    
     const response = await request
       .post("/orders/" + dummy_order.id + "/products")
       .send({ productid: dummy_product.id, quantity: 1 })
@@ -107,7 +106,9 @@ describe("POST /orders/:id/products == add product to order", () => {
 describe("GET /orders/:userid == Current order by userid", () => {
   it("should return a 200 response when all is well", async () => {
     const route = "/orders/" + dummy_user.id.toString();
-    const response = await request.get(route).set("Authorization", `Bearer ${token}`);
+    const response = await request
+      .get(route)
+      .set("Authorization", `Bearer ${token}`);
     expect(response.status).toBe(200);
     expect(response.body.product_id).toEqual(dummy_product.id);
     expect(response.body.name).toEqual(dummy_product.name);
@@ -126,7 +127,9 @@ describe("GET /orders/complete/:userid == Closed orders by userid", () => {
   });
   it("should return a 200 response when all is well", async () => {
     const route = "/orders/complete/" + dummy_user.id.toString();
-    const response = await request.get(route).set("Authorization", `Bearer ${token}`);
+    const response = await request
+      .get(route)
+      .set("Authorization", `Bearer ${token}`);
     expect(response.status).toBe(200);
     expect(response.body[0].product_id).toEqual(dummy_product.id);
     expect(response.body[0].status).toEqual("closed");

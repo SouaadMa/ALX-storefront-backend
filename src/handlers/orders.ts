@@ -50,7 +50,9 @@ const currentOrderByUser = async (req: Request, res: Response) => {
   try {
     if (!req.params.userid)
       throw new Error("userid is required to show current order");
-    const currentOrder = await store.currentOrderByUser(Number(req.params.userid));
+    const currentOrder = await store.currentOrderByUser(
+      Number(req.params.userid)
+    );
     res.json(currentOrder);
   } catch (err) {
     res.status(400);
@@ -62,7 +64,9 @@ const completedOrdersByUser = async (req: Request, res: Response) => {
   try {
     if (!req.params.userid)
       throw new Error("userid is required to show current order");
-    const completedOrders = await store.completedOrdersByUser(Number(req.params.userid));
+    const completedOrders = await store.completedOrdersByUser(
+      Number(req.params.userid)
+    );
     res.json(completedOrders);
   } catch (err) {
     res.status(400);
@@ -91,9 +95,9 @@ const verifyAuthToken = (req: Request, res: Response, next: Next) => {
 };
 
 const orderRoutes = (app: express.Application) => {
-  app.get("/orders", index); 
-  app.post("/orders", verifyAuthToken, create); 
-  app.post("/orders/:id/products", verifyAuthToken, orderProduct); 
+  app.get("/orders", index);
+  app.post("/orders", verifyAuthToken, create);
+  app.post("/orders/:id/products", verifyAuthToken, orderProduct);
   app.get("/orders/:userid", verifyAuthToken, currentOrderByUser);
   app.get("/orders/complete/:userid", verifyAuthToken, completedOrdersByUser);
 };

@@ -15,7 +15,7 @@ describe("Dashboard Service", () => {
       name: "Pc",
       price: 23300,
     };
-    let mouse = {
+    const mouse = {
       id: 0,
       name: "Mouse",
       price: 150,
@@ -47,7 +47,7 @@ describe("Dashboard Service", () => {
 
     pc = await product_store.create(pc);
 
-    mouse = await product_store.create(mouse);
+    await product_store.create(mouse);
 
     keyboard = await product_store.create(keyboard);
 

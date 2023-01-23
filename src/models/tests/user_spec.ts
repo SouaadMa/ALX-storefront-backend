@@ -2,14 +2,14 @@ import { UserStore, User } from "../user";
 
 const store = new UserStore();
 
-let create_user: User = {
+const create_user: User = {
   id: 0,
   firstname: "souaad",
   lastname: "bhd",
   password: "souaad",
 };
 
-let dummy_user = {
+const dummy_user = {
   id: 0,
   firstname: "souaad",
   lastname: "bhd",

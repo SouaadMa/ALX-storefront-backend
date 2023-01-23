@@ -1,17 +1,16 @@
 import supertest from "supertest";
-import { UserStore, User } from "../../models/user";
+import { User } from "../../models/user";
 import app from "../../server";
 
 const request = supertest(app);
-const user_store = new UserStore();
-let create_user: User = {
+const create_user: User = {
   id: 0,
   firstname: "souaad",
   lastname: "souaad",
   password: "souaad",
 };
 
-let dummy_user = {
+const dummy_user = {
   id: 0,
   firstname: "souaad",
   lastname: "souaad",
