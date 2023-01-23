@@ -77,5 +77,5 @@ describe("GET /products/:id", () => {
 afterAll(async () => {
   // Delete the dummy product from the products table to not mess up other tests
   await product_store.delete(dummy_product.id.toString());
-  await user_store.delete(dummy_user.id.toString());
+  // await user_store.delete(dummy_user.id.toString());
 });

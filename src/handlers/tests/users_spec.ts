@@ -81,5 +81,5 @@ describe("GET /users/:id", () => {
 });
 afterAll(async () => {
   // Delete the dummy user from the users table to not mess up other tests
-  await user_store.delete(dummy_user.id.toString());
+  // await user_store.delete(dummy_user.id.toString());
 });

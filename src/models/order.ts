@@ -3,7 +3,7 @@ import client from "../database";
 
 export type Order = {
   id: number;
-  status: string;
+  status: string; //active or closed
   user_id: number;
 };
 
@@ -77,7 +77,11 @@ export class OrderStore {
     }
   }
 
-  async addProduct(order_id: number, product_id: number): Promise<Order> {
+  async addProduct(
+    order_id: number,
+    product_id: number,
+    quantity: number
+  ): Promise<Order> {
     try {
       const status = await this.checkStatus(order_id);
 
@@ -86,11 +90,11 @@ export class OrderStore {
       }
 
       const sql =
-        "INSERT INTO order_products (order_id, product_id) VALUES($1, $2) RETURNING *";
+        "INSERT INTO order_products (order_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *";
       // @ts-ignore
       const conn = await client.connect();
 
-      const result = await conn.query(sql, [order_id, product_id]);
+      const result = await conn.query(sql, [order_id, product_id, quantity]);
 
       const order = result.rows[0];
 
@@ -112,6 +116,24 @@ export class OrderStore {
 
       const result = await conn.query(sql, [order_id]);
 
+      const status = result.rows[0].status;
+
+      conn.release();
+
+      return status;
+    } catch (err) {
+      throw new Error(`Could not select order ${order_id}. Error: ${err}`);
+    }
+  }
+
+  async closeOrder(order_id: number): Promise<string> {
+    try {
+      const sql = "UPDATE orders SET status=$1 WHERE id=$2";
+      // @ts-ignore
+      const conn = await client.connect();
+
+      const result = await conn.query(sql, ["closed", order_id]);
+
       const status = result.rows[0];
 
       conn.release();
@@ -125,7 +147,8 @@ export class OrderStore {
   // Get Current Order by user (args: user id)
   async currentOrderByUser(user_id: number): Promise<Order> {
     try {
-      const sql = "SELECT * FROM orders WHERE user_id=$1 AND status=$2";
+      const sql =
+        "SELECT * FROM orders JOIN order_products ON orders.id=order_products.order_id JOIN products ON products.id=order_products.product_id WHERE user_id=$1 AND status=$2";
 
       //@ts-ignore
       const conn = await client.connect();
@@ -143,7 +166,8 @@ export class OrderStore {
   // Get Completed Orders by user (args: user id)
   async completedOrdersByUser(user_id: number): Promise<Order[]> {
     try {
-      const sql = "SELECT * FROM orders WHERE user_id=$1 AND status=$2";
+      const sql =
+        "SELECT * FROM orders JOIN order_products ON orders.id=order_products.order_id JOIN products ON products.id=order_products.product_id WHERE user_id=$1 AND status=$2";
 
       //@ts-ignore
       const conn = await client.connect();
