@@ -1,6 +1,19 @@
-import { UserStore } from "../user";
+import { UserStore, User } from "../user";
 
 const store = new UserStore();
+
+let create_user: User = {
+  id: 0,
+  firstname: "souaad",
+  lastname: "bhd",
+  password: "souaad",
+};
+
+let dummy_user = {
+  id: 0,
+  firstname: "souaad",
+  lastname: "bhd",
+};
 
 describe("User Model", () => {
   it("should have an index method", () => {
@@ -20,45 +33,23 @@ describe("User Model", () => {
   });
 
   it("create method should add a user", async () => {
-    const result = await store.create({
-      id: 0,
-      firstName: "souaad",
-      lastName: "souaad",
-      password: "souaad",
-    });
-    expect(result).toEqual({
-      id: 2,
-      firstName: "souaad",
-      lastName: "souaad",
-    });
+    const result = await store.create(create_user);
+    if (result) dummy_user.id = result.id;
+    expect(result).toEqual(dummy_user);
   });
 
   it("index method should return a list of users", async () => {
     const result = await store.index();
-    expect(result).toEqual([
-      {
-        id: 2,
-        firstname: "souaad",
-        lastname: "souaad",
-      },
-    ]);
+    expect(result).toContain(dummy_user);
   });
 
   it("show method should return the correct user", async () => {
-    const result = await store.show(2);
-    expect(result).toEqual({
-      id: 2,
-      firstname: "souaad",
-      lastname: "souaad",
-    });
+    const result = await store.show(dummy_user.id);
+    expect(result).toEqual(dummy_user);
   });
 
   it("authenticate method should return the correct user", async () => {
-    const result = await store.authenticate("souaad", "souaad", "souaad");
-    expect(result).toEqual({
-      id: 2,
-      firstname: "souaad",
-      lastname: "souaad",
-    });
+    const result = await store.authenticate("souaad", "bhd", "souaad");
+    expect(result).toEqual(dummy_user);
   });
 });

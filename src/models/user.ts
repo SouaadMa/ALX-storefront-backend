@@ -9,8 +9,8 @@ const pepper = process.env.BCRYPT_PASSWORD;
 
 export type User = {
   id: number;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   password: string;
 };
 
@@ -21,7 +21,7 @@ export class UserStore {
     try {
       // @ts-ignore
       const conn = await client.connect();
-      const sql = "SELECT id, firstName, lastName FROM users";
+      const sql = "SELECT id, firstname, lastname FROM users";
 
       const result = await conn.query(sql);
 
@@ -37,7 +37,7 @@ export class UserStore {
     id: number
   ): Promise<{ id: number; firstname: string; lastname: string }> {
     try {
-      const sql = "SELECT id, firstName, lastName FROM users WHERE id=($1)";
+      const sql = "SELECT id, firstname, lastname FROM users WHERE id=($1)";
       // @ts-ignore
       const conn = await client.connect();
 
@@ -53,10 +53,10 @@ export class UserStore {
 
   async create(
     u: User
-  ): Promise<{ id: number; firstName: string; lastName: string } | null> {
+  ): Promise<{ id: number; firstname: string; lastname: string } | null> {
     try {
       const sql =
-        "INSERT INTO users (firstName, lastName, password) VALUES($1, $2, $3) RETURNING id, firstName, lastName";
+        "INSERT INTO users (firstname, lastname, password) VALUES($1, $2, $3) RETURNING id, firstname, lastname";
       // @ts-ignore
       const conn = await client.connect();
 
@@ -66,7 +66,7 @@ export class UserStore {
 
       const hash = bcrypt.hashSync(u.password + pepper, parseInt(SALT_ROUNDS));
 
-      const result = await conn.query(sql, [u.firstName, u.lastName, hash]);
+      const result = await conn.query(sql, [u.firstname, u.lastname, hash]);
 
       const user = result.rows[0];
 
@@ -74,11 +74,11 @@ export class UserStore {
 
       return {
         id: user.id,
-        firstName: user.firstname,
-        lastName: user.lastname,
+        firstname: user.firstname,
+        lastname: user.lastname,
       };
     } catch (err) {
-      throw new Error(`Could not add new user ${u.firstName}. Error: ${err}`);
+      throw new Error(`Could not add new user ${u.firstname}. Error: ${err}`);
     }
   }
 
@@ -101,16 +101,16 @@ export class UserStore {
   }
 
   async authenticate(
-    firstName: string,
-    lastName: string,
+    firstname: string,
+    lastname: string,
     password: string
   ): Promise<{ id: number; firstname: string; lastname: string } | null> {
     try {
-      const sql = "SELECT * FROM users WHERE firstName=($1) AND lastName=($2)";
+      const sql = "SELECT * FROM users WHERE firstname=($1) AND lastname=($2)";
       // @ts-ignore
       const conn = await client.connect();
 
-      const result = await conn.query(sql, [firstName, lastName]);
+      const result = await conn.query(sql, [firstname, lastname]);
 
       if (!pepper || !SALT_ROUNDS) {
         throw new Error(`Pepper and Salt rounds are required.`);
@@ -134,7 +134,7 @@ export class UserStore {
       return null;
     } catch (err) {
       throw new Error(
-        `Could not authenticate user ${firstName} ${lastName}. Error: ${err}`
+        `Could not authenticate user ${firstname} ${lastname}. Error: ${err}`
       );
     }
   }
