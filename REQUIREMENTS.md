@@ -9,23 +9,21 @@ These are the notes from a meeting with the frontend developer that describe wha
 - Show : '/products/:id' [GET]
 - Create [token required] : '/products' [POST]
 - [OPTIONAL] Top 5 most popular products : '/five-most-expensive' [GET]
-- [OPTIONAL] Products by category (args: product category) 
 
 #### Users
 - Index [token required] : '/users' [GET]
 - Show [token required] : '/users/:id' [GET]
-- Create N[token required] : '/users' [post]
+- Create : '/users' [POST]
 
 #### Orders
 - Current Order by user (args: user id)[token required] : '/orders/:userid' [GET]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required] 'orders/complete/:userid'
+- [OPTIONAL] Completed Orders by user (args: user id)[token required] 'orders/complete/:userid' [GET]
 
 ## Data Shapes
 #### Product
 -  id
 - name
 - price
-- [OPTIONAL] category
 
 #### User
 - id
@@ -38,7 +36,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 - id of each product in the order
 - quantity of each product in the order
 - user_id
-- status of order (active or complete)
+- status of order (active or closed)
 
 ## Database Schema
 ### Table products
