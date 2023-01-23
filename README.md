@@ -60,6 +60,13 @@ If your relations look similar to this, you're all set.
 npm run test
 ```
 
+### 4. Start server
+```shell
+yarn watch
+```
+This will start the compilation in watch mode.
+App will start on 0.0.0.0:3000
+
 ## API requirements
 In this repo there is a `REQUIREMENTS.md` document which outlines what this API supplies for the frontend, as well as the agreed upon data shapes to be passed between front and backend. 
 
