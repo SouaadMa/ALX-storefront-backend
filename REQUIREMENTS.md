@@ -29,8 +29,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### User
 - id
-- firstName
-- lastName
+- firstname
+- lastname
 - password
 
 #### Orders
@@ -44,7 +44,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 ### Table products
 (id: varchar, name: varchar, price: number)
 ### Table users
-(id: varchar, firstName: varchar, lastName: varchar, password: varchar)
+(id: varchar, firstname: varchar, lastname: varchar, password: varchar)
 ### Table orders
 (id: varchar, status: varchar, user_id: varchar[foreign key to table users])
 ### Table order_products

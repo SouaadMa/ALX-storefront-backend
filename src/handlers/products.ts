@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import { Product, ProductStore } from "../models/product";
 import jwt from "jsonwebtoken";
-import dotenv from 'dotenv';
-dotenv.config()
+import dotenv from "dotenv";
+dotenv.config();
 type Next = () => void | Promise<void>;
 const store = new ProductStore();
 
@@ -38,12 +38,14 @@ const verifyAuthToken = (req: Request, res: Response, next: Next) => {
   try {
     //Accesing the header
     const authorizationHeader = req.headers.authorization;
-    if(authorizationHeader == null) throw new Error("authorizationHeader is undefined!")
+    if (authorizationHeader == null)
+      throw new Error("authorizationHeader is undefined!");
     const token = authorizationHeader.split(" ")[1]; // to separate the bearer
     const decoded = jwt.verify(token, process.env.TOKEN_SECRET as string);
     next();
   } catch (error) {
     res.status(401);
+    res.json(error);
   }
 };
 

@@ -9,8 +9,8 @@ describe("Order Model", () => {
   beforeAll(async () => {
     const result = await user_store.create({
       id: 0,
-      firstName: "souaad",
-      lastName: "souaad",
+      firstname: "souaad",
+      lastname: "souaad",
       password: "souaad",
     });
   });
