@@ -7,8 +7,13 @@ type Next = () => void | Promise<void>;
 const store = new OrderStore();
 
 const index = async (_req: Request, res: Response) => {
-  const orders = await store.index();
-  res.json(orders);
+  try {
+    const orders = await store.index();
+    res.json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  }
 };
 
 const create = async (req: Request, res: Response) => {
@@ -75,8 +80,13 @@ const completedOrdersByUser = async (req: Request, res: Response) => {
 };
 
 const destroy = async (req: Request, res: Response) => {
-  const deleted = await store.delete(req.body.id);
-  res.json(deleted);
+  try {
+    const deleted = await store.delete(req.body.id);
+    res.json(deleted);
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  }
 };
 
 const verifyAuthToken = (req: Request, res: Response, next: Next) => {

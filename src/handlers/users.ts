@@ -7,13 +7,23 @@ type Next = () => void | Promise<void>;
 const store = new UserStore();
 
 const index = async (_req: Request, res: Response) => {
-  const users = await store.index();
-  res.json(users);
+  try {
+    const users = await store.index();
+    res.json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  }
 };
 
 const show = async (req: Request, res: Response) => {
-  const user = await store.show(Number(req.params.id));
-  res.json(user);
+  try {
+    const user = await store.show(Number(req.params.id));
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  }
 };
 
 const create = async (req: Request, res: Response) => {
@@ -70,8 +80,13 @@ const authenticate = async (req: Request, res: Response) => {
 };
 
 const destroy = async (req: Request, res: Response) => {
-  const deleted = await store.delete(req.body.id);
-  res.json(deleted);
+  try {
+    const deleted = await store.delete(req.body.id);
+    res.json(deleted);
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  }
 };
 
 const verifyAuthToken = (req: Request, res: Response, next: Next) => {
