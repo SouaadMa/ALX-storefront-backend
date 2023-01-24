@@ -95,7 +95,7 @@ const verifyAuthToken = (req: Request, res: Response, next: Next) => {
 };
 
 const orderRoutes = (app: express.Application) => {
-  app.get("/orders", index);
+  app.get("/orders", verifyAuthToken, index);
   app.post("/orders", verifyAuthToken, create);
   app.post("/orders/:id/products", verifyAuthToken, orderProduct);
   app.get("/orders/:userid", verifyAuthToken, currentOrderByUser);

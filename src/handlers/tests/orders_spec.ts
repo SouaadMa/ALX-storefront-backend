@@ -46,8 +46,12 @@ beforeAll(async () => {
 
 describe("GET /orders == index", () => {
   it("should return a 200 response when all is well", async () => {
-    const response = await request.get("/orders");
+    const response = await request.get("/orders").set("Authorization", `Bearer ${token}`);
     expect(response.status).toBe(200);
+  });
+  it("should return a 401 response body when token isnt provided", async () => {
+    const response = await request.get("/orders");
+    expect(response.status).toBe(401);
   });
 });
 
